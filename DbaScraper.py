@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import render_template
 from lxml import html
+from bs4 import BeautifulSoup
 import requests
 
 
@@ -15,9 +16,21 @@ def get_search():
 @app.route('/scrape')
 def get_scrape_result():
     print('Getting scraper result')
-    page = requests.get('http://dba.dk')
+    page = requests.get('http://www.dba.dk/soeg/?soeg=gibson+les+paul')
+
     tree = html.fromstring(page.content)
-    print(tree)
+    #tree = etree.fromstring(page.content)
+    #[e.get('.dbaListing') for e in tree.xpath]
+
+
+    soup = BeautifulSoup(page.content, 'html.parser')
+    listingSoup = soup.find_all("tr", { "class" : "dbaListing" })
+
+    print(listingSoup)
+    #print(soup.prettify())
+
+
+    #print(tree)
     return page.text
 
 
