@@ -7,6 +7,10 @@ import requests
 
 app = Flask(__name__)
 
+@app.route('/')
+@app.route('/home')
+def get_home():
+    return render_template("index.html")
 
 @app.route('/search')
 def get_search():
